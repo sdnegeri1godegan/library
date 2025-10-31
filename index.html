@@ -1,1 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kuncup Mekar 1 - Perpustakaan Digital</title>
 
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="icon" href="icon-192.png" type="image/png"/>
+
+  <!-- PWA -->
+  <meta name="theme-color" content="#0d6efd"/>
+  <link rel="apple-touch-icon" href="icon-192.png"/>
+
+  <style>
+    .scan-area { border: 3px dashed #0d6efd; border-radius: 12px; padding: 2rem; text-align: center; }
+    .book-card { transition: 0.3s; }
+    .book-card:hover { transform: scale(1.03); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+    .offline-badge { position: fixed; bottom: 1rem; right: 1rem; z-index: 9999; }
+    #loading { display: none; }
+  </style>
+</head>
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">Kuncup Mekar 1</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('home')">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('search')">Cari Buku</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('scan')">Scan</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('student')">Status Siswa</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('admin')" id="adminLink" style="display:none">Admin</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" onclick="logout()" id="logoutLink" style="display:none">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+
+  <!-- HOME -->
+  <div id="home" class="section">
+    <div class="row text-center">
+      <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Total Buku</h5>
+            <h3 id="stat-books">0</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Siswa Aktif</h5>
+            <h3 id="stat-members">0</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-warning mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Peminjaman</h5>
+            <h3 id="stat-loans">0</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <button class="btn btn-lg btn-primary" onclick="showSection('scan')">Mulai Scan</button>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div id="search" class="section" style="display:none">
+    <h2>Cari Buku</h2>
+    <div class="input-group mb-3">
+      <input type="text" id="searchQuery" class="form-control form-control-lg" placeholder="Judul, DDC, Penulis..."/>
+      <button class="btn btn-primary" onclick="searchBooks()">Cari</button>
+    </div>
+    <div id="searchResults"></div>
+  </div>
+
+  <!-- SCAN -->
+  <div id="scan" class="section" style="display:none">
+    <h2>Unified Scan</h2>
+    <div class="scan-area mb-3">
+      <div id="scanner-container" style="width:100%; max-width:500px; margin:0 auto;"></div>
+      <p class="mt-3" id="scanResult">Arahkan kamera ke barcode...</p>
+    </div>
+    <button class="btn btn-success" onclick="startScanner()">Mulai Scan</button>
+    <button class="btn btn-danger" onclick="stopScanner()">Stop</button>
+  </div>
+
+  <!-- STUDENT STATUS -->
+  <div id="student" class="section" style="display:none">
+    <h2>Cek Status Siswa</h2>
+    <div class="input-group mb-3">
+      <input type="text" id="nisInput" class="form-control" placeholder="Masukkan NIS (4 digit)" maxlength="4"/>
+      <button class="btn btn-primary" onclick="checkStudent()">Cek</button>
+    </div>
+    <div id="studentResult"></div>
+  </div>
+
+  <!-- ADMIN LOGIN -->
+  <div id="adminLogin" class="section" style="display:none">
+    <h2>Login Admin</h2>
+    <form onsubmit="loginAdmin(event)">
+      <input type="text" class="form-control mb-2" placeholder="Username" id="adminUser" required/>
+      <input type="password" class="form-control mb-2" placeholder="Password" id="adminPass" required/>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+  </div>
+
+  <!-- ADMIN DASHBOARD -->
+  <div id="admin" class="section" style="display:none">
+    <h2>Admin Dashboard</h2>
+    <ul class="list-group">
+      <li class="list-group-item"><a href="#" onclick="showAdminSection('book')">Tambah Buku</a></li>
+      <li class="list-group-item"><a href="#" onclick="showAdminSection('bulk')">Bulk Upload</a></li>
+      <li class="list-group-item"><a href="#" onclick="showAdminSection('promote')">Kenaikan Kelas</a></li>
+      <li class="list-group-item"><a href="#" onclick="performBackup()">Backup Sekarang</a></li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- Offline Badge -->
+<div class="offline-badge badge bg-danger" id="offlineBadge" style="display:none">Offline</div>
+
+<!-- Loading -->
+<div id="loading" class="position-fixed top-50 start-50 translate-middle bg-white p-4 rounded shadow">
+  <div class="spinner-border text-primary"></div> <span>Memproses...</span>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/idb@7/build/umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+<script src="app.js"></script>
+
+<!-- PWA Service Worker -->
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('SW registered', reg))
+      .catch(err => console.log('SW error', err));
+  }
+</script>
+
+</body>
+</html>
