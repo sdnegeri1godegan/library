@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Kuncup Mekar 1 Digital Library</title>
+    <link rel="stylesheet" href="styles/login.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <!-- Header -->
+        <div class="login-header">
+            <div class="logo">🌺</div>
+            <h1 class="app-name">KUNCUP MEKAR 1</h1>
+            <p class="app-subtitle">DIGITAL LIBRARY SYSTEM</p>
+            <p class="app-version">Sistem v2.0</p>
+        </div>
+
+        <!-- Login Form -->
+        <div class="login-card">
+            <h2 class="login-title">LOGIN ADMIN</h2>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username"
+                        class="form-input"
+                        placeholder="Masukkan username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password"
+                        class="form-input"
+                        placeholder="Masukkan password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span class="btn-text">MASUK</span>
+                    <span class="btn-loading" style="display: none;">Memproses...</span>
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <p class="system-info">Sistem Manajemen Perpustakaan Digital</p>
+            </div>
+        </div>
+
+        <!-- Message Display -->
+        <div id="message" class="message"></div>
+    </div>
+
+    <script src="scripts/api.js"></script>
+    <script src="scripts/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
+            const messageDiv = document.getElementById('message');
+            const btnText = loginBtn.querySelector('.btn-text');
+            const btnLoading = loginBtn.querySelector('.btn-loading');
+
+            // Redirect if already logged in
+            if (AuthService.isLoggedIn()) {
+                window.location.href = 'admin.html';
+            }
+
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                // Show loading state
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'inline';
+                loginBtn.disabled = true;
+
+                // Clear previous messages
+                messageDiv.className = 'message';
+                messageDiv.textContent = '';
+
+                try {
+                    const result = await AuthService.login(username, password);
+                    
+                    if (result.success) {
+                        messageDiv.className = 'message success';
+                        messageDiv.textContent = 'Login berhasil! Mengalihkan...';
+                        
+                        setTimeout(() => {
+                            window.location.href = 'admin.html';
+                        }, 1000);
+                    } else {
+                        messageDiv.className = 'message error';
+                        messageDiv.textContent = result.error || 'Login gagal!';
+                        
+                        // Reset button
+                        btnText.style.display = 'inline';
+                        btnLoading.style.display = 'none';
+                        loginBtn.disabled = false;
+                    }
+                } catch (error) {
+                    messageDiv.className = 'message error';
+                    messageDiv.textContent = 'Terjadi kesalahan sistem';
+                    
+                    // Reset button
+                    btnText.style.display = 'inline';
+                    btnLoading.style.display = 'none';
+                    loginBtn.disabled = false;
+                }
+            });
+
+            // Enter key support
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loginForm.dispatchEvent(new Event('submit'));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

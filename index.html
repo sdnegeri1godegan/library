@@ -3,120 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Perpustakaan Digital Kuncup Mekar 1</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Perpustakaan Digital - Kuncup Mekar 1</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/public.css">
 </head>
-<body>
-    <!-- Loading Screen -->
-    <div id="loading" class="loading-screen">
-        <div class="loading-spinner">
-            <i class="fas fa-book-open"></i>
-            <p>Memuat Sistem Perpustakaan...</p>
+<body class="public-page">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="logo">🌺</span>
+            <span class="brand-text">Kuncup Mekar 1</span>
         </div>
-    </div>
-
-    <!-- Auth Modal -->
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <i class="fas fa-sign-in-alt"></i>
-                <h2>Masuk ke Sistem</h2>
-            </div>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label><i class="fas fa-envelope"></i> Email</label>
-                    <input type="email" id="loginEmail" required>
-                </div>
-                <div class="form-group">
-                    <label><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" id="loginPassword" required>
-                </div>
-                <button type="submit" class="btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Masuk
-                </button>
-            </form>
-            <div id="loginMessage"></div>
+        
+        <button class="nav-toggle" id="navToggle">☰</button>
+        
+        <div class="nav-items" id="navItems">
+            <button class="nav-item active" data-tab="beranda">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">Beranda</span>
+            </button>
+            <button class="nav-item" data-tab="cari">
+                <span class="nav-icon">🔍</span>
+                <span class="nav-text">Cari</span>
+            </button>
+            <button class="nav-item" data-tab="kategori">
+                <span class="nav-icon">📚</span>
+                <span class="nav-text">Kategori</span>
+            </button>
+            <button class="nav-item" data-tab="statistik">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">Statistik</span>
+            </button>
+            <button class="nav-item" data-tab="tentang">
+                <span class="nav-icon">🏫</span>
+                <span class="nav-text">Tentang</span>
+            </button>
+            <button class="nav-item" data-tab="admin">
+                <span class="nav-icon">🔐</span>
+                <span class="nav-text">Admin</span>
+            </button>
         </div>
-    </div>
+    </nav>
 
-    <!-- Main App -->
-    <div id="app" class="app hidden">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <i class="fas fa-book-open"></i>
-                <h3>Perpustakaan KM1</h3>
-            </div>
-            <nav class="sidebar-nav">
-                <a href="#" data-page="dashboard" class="nav-item active">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="#" data-page="students" class="nav-item">
-                    <i class="fas fa-users"></i>
-                    <span>Siswa</span>
-                    <span id="students-badge" class="badge"></span>
-                </a>
-                <a href="#" data-page="books" class="nav-item">
-                    <i class="fas fa-book"></i>
-                    <span>Buku</span>
-                    <span id="books-badge" class="badge"></span>
-                </a>
-                <a href="#" data-page="transactions" class="nav-item">
-                    <i class="fas fa-exchange-alt"></i>
-                    <span>Transaksi</span>
-                    <span id="loans-badge" class="badge"></span>
-                </a>
-                <a href="#" data-page="reports" class="nav-item">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Laporan</span>
-                </a>
-                <a href="#" data-page="scan" class="nav-item">
-                    <i class="fas fa-qrcode"></i>
-                    <span>Scan Cepat</span>
-                </a>
-                <a href="#" data-page="system" class="nav-item">
-                    <i class="fas fa-cogs"></i>
-                    <span>Sistem</span>
-                </a>
-            </nav>
-            <div class="sidebar-footer">
-                <button id="logoutBtn" class="btn-logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Keluar</span>
-                </button>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Header -->
-            <header class="header">
-                <button class="mobile-menu-toggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="header-info">
-                    <span id="currentUser"></span>
-                    <span id="currentTime"></span>
+    <!-- Main Content Area -->
+    <main class="content-area">
+        <!-- Beranda Tab -->
+        <div id="beranda-content" class="tab-content active">
+            <div class="hero-section">
+                <h1 class="hero-title">Selamat Datang</h1>
+                <p class="hero-subtitle">Perpustakaan Digital Kuncup Mekar 1</p>
+                <p class="hero-tagline">"Membuka Jendela Dunia melalui Membaca"</p>
+                
+                <div class="search-bar-hero">
+                    <input type="text" id="hero-search" placeholder="Cari buku, pengarang, atau mata pelajaran...">
+                    <button class="search-btn">🔍</button>
                 </div>
-            </header>
-
-            <!-- Page Content -->
-            <div id="pageContent">
-                <!-- Dashboard will be loaded here -->
             </div>
-        </main>
+
+            <div class="stats-quick">
+                <h2>📊 Statistik Cepat</h2>
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Stats akan di-load oleh JavaScript -->
+                </div>
+            </div>
+
+            <div class="popular-books">
+                <h2>🔥 Buku Populer Minggu Ini</h2>
+                <div class="books-grid" id="popularBooks">
+                    <!-- Popular books akan di-load oleh JavaScript -->
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h2>🎯 Akses Cepat</h2>
+                <div class="actions-grid">
+                    <button class="action-card" data-tab="cari">
+                        <span class="action-icon">🔍</span>
+                        <span class="action-text">Cari Buku</span>
+                    </button>
+                    <button class="action-card" data-tab="kategori">
+                        <span class="action-icon">📚</span>
+                        <span class="action-text">Jelajahi Kategori</span>
+                    </button>
+                    <button class="action-card" data-tab="statistik">
+                        <span class="action-icon">📊</span>
+                        <span class="action-text">Lihat Statistik</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cari Tab -->
+        <div id="cari-content" class="tab-content">
+            <div class="search-header">
+                <h1>🔍 Cari Buku</h1>
+                <div class="search-bar">
+                    <input type="text" id="main-search" placeholder="Cari judul, pengarang, ISBN, atau kata kunci...">
+                    <button id="search-btn">Cari</button>
+                </div>
+            </div>
+
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label>📚 Kategori:</label>
+                    <select id="category-filter">
+                        <option value="">Semua Kategori</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>🏷️ Subyek:</label>
+                    <select id="subject-filter">
+                        <option value="">Semua Subyek</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>📅 Tahun:</label>
+                    <input type="number" id="year-from" placeholder="2010" min="1900" max="2024">
+                    <span>-</span>
+                    <input type="number" id="year-to" placeholder="2024" min="1900" max="2024">
+                </div>
+                <div class="filter-group">
+                    <label>📍 Status:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="status" value="" checked> Semua</label>
+                        <label><input type="radio" name="status" value="available"> Tersedia</label>
+                        <label><input type="radio" name="status" value="borrowed"> Dipinjam</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-results">
+                <div class="results-info">
+                    <span id="results-count">Menampilkan 0 hasil</span>
+                </div>
+                <div class="results-container" id="searchResults">
+                    <!-- Search results akan di-load di sini -->
+                </div>
+                <div class="pagination" id="pagination">
+                    <!-- Pagination akan di-generate oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Kategori Tab -->
+        <div id="kategori-content" class="tab-content">
+            <h1>📚 Jelajahi Kategori</h1>
+            <p class="tab-description">Telusuri koleksi buku berdasarkan sistem klasifikasi DDC</p>
+            
+            <div class="categories-container">
+                <div class="ddc-tree" id="ddcTree">
+                    <!-- DDC tree akan di-load oleh JavaScript -->
+                </div>
+                <div class="category-books" id="categoryBooks">
+                    <div class="placeholder-message">
+                        Pilih kategori untuk melihat buku
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistik Tab -->
+        <div id="statistik-content" class="tab-content">
+            <h1>👥 Statistik Perpustakaan</h1>
+            
+            <div class="stats-overview">
+                <div class="stat-cards" id="statCards">
+                    <!-- Stat cards akan di-load oleh JavaScript -->
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-section">
+                    <h3>📖 Pola Peminjaman Bulan Ini</h3>
+                    <div class="chart-placeholder" id="loanChart">
+                        <div class="mock-chart">
+                            <div class="chart-bars">
+                                <div class="bar" style="height: 80%"></div>
+                                <div class="bar" style="height: 60%"></div>
+                                <div class="bar" style="height: 90%"></div>
+                                <div class="bar" style="height: 70%"></div>
+                                <div class="bar" style="height: 85%"></div>
+                                <div class="bar" style="height: 95%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <h3>👥 Kategori Peminjam</h3>
+                    <div class="chart-placeholder" id="borrowerChart">
+                        <div class="mock-pie">
+                            <div class="pie-segment students"></div>
+                            <div class="pie-segment teachers"></div>
+                            <div class="pie-segment staff"></div>
+                        </div>
+                        <div class="pie-legend">
+                            <div class="legend-item">
+                                <span class="color-dot students"></span>
+                                <span>Siswa (75%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="color-dot teachers"></span>
+                                <span>Guru (20%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="color-dot staff"></span>
+                                <span>Staff (5%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="top-books">
+                <h3>🏆 Top 5 Buku Terpopuler</h3>
+                <div class="top-list" id="topBooksList">
+                    <!-- Top books list akan di-load oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tentang Tab -->
+        <div id="tentang-content" class="tab-content">
+            <h1>🏫 Tentang Kami</h1>
+            
+            <div class="about-section">
+                <div class="vision-mission">
+                    <h2>🌺 Visi & Misi</h2>
+                    <div class="vision">
+                        <h3>Visi:</h3>
+                        <p>Menjadi pusat pengetahuan digital terdepan untuk komunitas Kuncup Mekar 1</p>
+                    </div>
+                    <div class="mission">
+                        <h3>Misi:</h3>
+                        <ul>
+                            <li>Menyediakan akses literatur yang lengkap dan terkini</li>
+                            <li>Mendorong budaya membaca dan penelitian</li>
+                            <li>Mendukung proses belajar mengajar yang efektif</li>
+                            <li>Mengembangkan literasi digital bagi seluruh komunitas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="contact-info">
+                    <h2>📞 Informasi Kontak</h2>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <span class="contact-icon">🕒</span>
+                            <div>
+                                <strong>Jam Operasional</strong>
+                                <p>Senin - Jumat: 07.00 - 15.00</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📍</span>
+                            <div>
+                                <strong>Lokasi</strong>
+                                <p>Gedung Perpustakaan Lantai 1<br>Kuncup Mekar 1</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📞</span>
+                            <div>
+                                <strong>Telepon</strong>
+                                <p>(021) 1234-5678</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📧</span>
+                            <div>
+                                <strong>Email</strong>
+                                <p>pustaka@kuncupmekar1.sch.id</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="staff-info">
+                    <h2>👥 Staf Perpustakaan</h2>
+                    <div class="staff-grid">
+                        <div class="staff-card">
+                            <div class="staff-avatar">👩‍💼</div>
+                            <h3>Bu Sari</h3>
+                            <p>Kepala Perpustakaan</p>
+                        </div>
+                        <div class="staff-card">
+                            <div class="staff-avatar">👨‍💼</div>
+                            <h3>Pak Budi</h3>
+                            <p>Staff Administrasi</p>
+                        </div>
+                        <div class="staff-card">
+                            <div class="staff-avatar">👩‍💻</div>
+                            <h3>Ika</h3>
+                            <p>Staff Teknologi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Tab -->
+        <div id="admin-content" class="tab-content">
+            <div class="admin-access">
+                <div class="admin-lock">
+                    <div class="lock-icon">🔒</div>
+                    <h2>Area Terlindung</h2>
+                    <p>Halaman ini khusus untuk staff perpustakaan yang berwenang</p>
+                    
+                    <button class="login-redirect-btn" onclick="window.location.href='login.html'">
+                        🔐 Login ke Admin
+                    </button>
+                </div>
+
+                <div class="admin-features">
+                    <h3>Fitur Admin yang Tersedia:</h3>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <span class="feature-icon">📚</span>
+                            <span>Manajemen Koleksi Buku</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">👥</span>
+                            <span>Manajemen Data Anggota</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🔄</span>
+                            <span>Sistem Peminjaman & Pengembalian</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">📊</span>
+                            <span>Laporan dan Statistik Lengkap</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">⚙️</span>
+                            <span>Konfigurasi Sistem</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="back-home">
+                    <button class="back-btn" data-tab="beranda">
+                        ← Kembali ke Beranda
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Memuat...</p>
     </div>
 
-    <!-- Mobile Menu Overlay -->
-    <div id="mobileOverlay" class="mobile-overlay"></div>
-
-    <script src="js/app.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/students.js"></script>
-    <script src="js/books.js"></script>
-    <script src="js/transactions.js"></script>
+    <script src="scripts/api.js"></script>
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/public-app.js"></script>
 </body>
 </html>
