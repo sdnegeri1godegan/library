@@ -1,5 +1,5 @@
 class ApiService {
-    static BASE_URL = 'https://script.google.com/macros/s/AKfycby3T2hqfBmZxVDEYmLF6kMJgwkKbwwRoRfAIzdlaGbOZYRvFUI05JYRUzIRPfSn6go/exec';
+    static BASE_URL = 'https://script.google.com/macros/s/AKfycbzQmt2IYCCrc48brOaDtkANMkZ4KlDgVG7-xaC5EvzK_6rgIv4RnQnykHm7v_GqmSE/exec';
 
     static async makeRequest(action, params = {}) {
         try {
