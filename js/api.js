@@ -2,7 +2,7 @@
 class ApiService {
     constructor() {
         // 🔧 UPDATE THIS WITH YOUR GAS SCRIPT URL
-        this.baseUrl = 'https://script.google.com/macros/s/AKfycbxbVB6aAfLqr56iUNlfHoJRuJPY_3kUqToqmZuMA3AcwsyQVUk_L0k7I_IZ52g6lWA/exec';
+        this.baseUrl = 'https://script.google.com/macros/s/AKfycbxI0S-gAxMUlmbe8-pbAUoQbTQLEWqgc8LBbraQZtfHVxeqoBoo14JD6g2s75dO-EU/exec';
         this.cache = new Map();
         this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
     }
